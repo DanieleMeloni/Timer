@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timer</title>
+  <style>
+    body {      
+      font-family: calibri;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;      
+      align-items: center;
+      justify-content: space-around;
+      height: 100vh;
+      background-color: lightgreen;
+    
+    }
+    h1 {
+      font-size: 11rem;
+      text-shadow: 2px 2px 2px grey;
+      border: 0;
+    }
+    .btn{
+      font-size:4rem;
+      font-weight: bold;
+      border:none;
+      background-color:green;
+      color:white;
+      border-radius: 10px;
+      text-shadow: 2px 2px 2px greenyellow;
+      padding: 15px;
+      width: 15rem;
+    }
+    .btnStop {
+      text-shadow: 2px 2px 2px pink;
+      background-color: red;
+    }
+
+    .resetContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      width: 100%;
+      height: 25%;
+      
+      
+      justify-content: center;
+     
+      
+      
+      
+      
+    }
+    .btnReset{
+      display: none;
+      align-items: center;
+      text-align: center;
+      font-size:4rem;
+      font-weight: bold;
+      border:none;
+      background-color: orange;
+      color:white;
+      border-radius: 10px;
+      text-shadow: 2px 2px 2px rgb(255, 210, 126);
+      padding: 15px;
+      width: 15rem;
+
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>00:00</h1>
+    <button
+    class="btn" 
+    id="startstop" 
+    onclick="startStop(id)"
+    >Start</button>
+    <div class="resetContainer">
+      
+      <button class="btnReset"
+      onclick="resetTimer()"
+      >Reset</button>
+    </div>
+  </div>
+  
+  <script>
+    
+    
+    function contator() {
+      let timeString = document.querySelector("h1").innerHTML;
+      let minuts = Number(timeString.split(":")[0]);
+      let seconds = Number(timeString.split(":")[1]);
+      seconds++;
+      if (seconds === 60) {
+        seconds = 0;
+        minuts++;
+        
+      }
+      if (minuts === 60) {
+        minuts = 0;        
+      }
+
+      if (seconds >= 10) {
+        seconds = String(seconds);
+      } else {
+        seconds = "0" + String(seconds);
+      }
+      if (minuts >= 10) {
+        minuts = String(minuts);
+      } else {
+        minuts = "0" + String(minuts);
+      }
+      timeString = minuts + ":" + seconds;
+      document.querySelector("h1").innerHTML = timeString;      
+    }
+
+    
+  let timerLoop; // Declare timerLoop in the outer scope to persist between function calls
+
+  function startStop(id) {      
+    const button = document.getElementById(id); // Cache the button element for efficiency
+    if (button.innerText === "Start") {
+      button.innerText = "Stop";
+      button.classList.toggle("btnStop");
+      document.querySelector(".btnReset").style.display = "none";
+      timerLoop = setInterval(contator, 1000); // Start the interval
+    } else {
+      button.innerText = "Start";
+      clearInterval(timerLoop); // Stop the interval
+      button.classList.toggle("btnStop");
+      if (document.querySelector("h1").innerText !== "00:00") {
+        document.querySelector(".btnReset").style.display = "block";
+      }
+      timerLoop = undefined; // Reset timerLoop to avoid confusion
+    }
+  }
+  
+  function resetTimer() {
+    document.querySelector("h1").innerText = "00:00";
+    document.querySelector(".btnReset").style.display = "none";
+  }
+  </script>
+</body>
+</html>
